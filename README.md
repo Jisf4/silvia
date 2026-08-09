@@ -6,7 +6,7 @@ La plataforma integra un **Dashboard ejecutivo en tiempo real** y un **Agente co
 
 ---
 
-## 🚀 Arquitectura general del sistema
+## Arquitectura general del sistema
 
 El sistema sigue una arquitectura moderna dividida en tres capas principales:
 
@@ -16,7 +16,7 @@ El sistema sigue una arquitectura moderna dividida en tres capas principales:
 
 ---
 
-## 🌟 Funcionalidades clave
+## Funcionalidades clave
 
 ### 1. Ingesta GPS y geofencing en tiempo real
 El backend procesa constantemente las coordenadas de la flota. Al cruzar las coordenadas con geocercas poligonales de canteras y plantas de descarga, el sistema detecta de forma automática:
