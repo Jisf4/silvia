@@ -1,0 +1,234 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+:root {
+  /* Default Light Mode (Por Defecto) */
+  --bg-color: #f8fafc;
+  --card-color: #ffffff;
+  --border-color: #cbd5e1;
+  --text-main: #334155;
+  --text-heading: #0f172a;
+  --text-sub: #64748b;
+  
+  --card-bg: rgba(255, 255, 255, 0.85);
+  --card-bg-sub: rgba(241, 245, 249, 0.75);
+  --border-color-rgba: rgba(0, 0, 0, 0.06);
+  --border-color-rgba-sub: rgba(0, 0, 0, 0.04);
+  
+  --input-bg: #ffffff;
+  --input-border: #cbd5e1;
+  --sidebar-bg: rgba(255, 255, 255, 0.45);
+}
+
+.dark-mode {
+  /* Dark Mode variables */
+  --bg-color: #0b0f19;
+  --card-color: #131b2e;
+  --border-color: #1e293b;
+  --text-main: #cbd5e1;
+  --text-heading: #f8fafc;
+  --text-sub: #64748b;
+  
+  --card-bg: rgba(19, 27, 46, 0.7);
+  --card-bg-sub: rgba(30, 41, 59, 0.4);
+  --border-color-rgba: rgba(255, 255, 255, 0.05);
+  --border-color-rgba-sub: rgba(255, 255, 255, 0.03);
+  
+  --input-bg: #0f172a;
+  --input-border: #1e293b;
+  --sidebar-bg: rgba(13, 20, 36, 0.4);
+}
+
+@theme {
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  
+  /* Paleta de colores dinámica */
+  --color-bg-dark: var(--bg-color);      /* Dynamic background */
+  --color-border-dark: var(--border-color);  /* Dynamic border color */
+  
+  --color-accent-teal: #14b8a6;  /* Botón predecir, verde azulado */
+  --color-accent-green: #10b981; /* Facturación, En ruta, Muy eficiente */
+  --color-accent-blue: #3b82f6;  /* Utilidad neta */
+  --color-accent-purple: #8b5cf6;/* Viajes realizados, Descargando */
+  --color-accent-orange: #f97316;/* Km recorridos, Detenido */
+  --color-accent-red: #ef4444;   /* Consumo combustible, Bajo, Crítico */
+}
+
+/* Clases de utilidad personalizadas para efectos visuales premium (Glassmorphism) */
+.glass-panel {
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-color-rgba);
+}
+
+.glass-card {
+  background: var(--card-bg-sub);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--border-color-rgba-sub);
+}
+
+/* Ocultar barra de scroll para estéticas más limpias en ciertas áreas */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  font-family: var(--font-sans);
+  margin: 0;
+  overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* =======================================================
+   LIGHT MODE ONLY OVERRIDES (html:not(.dark-mode))
+   ======================================================= */
+html:not(.dark-mode) .text-slate-300 {
+  color: var(--text-main);
+}
+html:not(.dark-mode) .text-slate-100 {
+  color: var(--text-heading);
+}
+html:not(.dark-mode) .text-slate-200 {
+  color: var(--text-heading);
+}
+html:not(.dark-mode) .text-slate-400 {
+  color: var(--text-main);
+}
+html:not(.dark-mode) .text-slate-500 {
+  color: var(--text-sub);
+}
+
+/* Background overrides in light mode */
+html:not(.dark-mode) .bg-slate-900 {
+  background-color: var(--input-bg);
+  border-color: var(--input-border);
+}
+html:not(.dark-mode) .bg-slate-900\/35 {
+  background-color: var(--card-bg-sub);
+}
+html:not(.dark-mode) .bg-slate-900\/40 {
+  background-color: var(--card-bg-sub);
+}
+html:not(.dark-mode) .bg-slate-900\/50 {
+  background-color: var(--card-bg-sub);
+}
+html:not(.dark-mode) .bg-slate-900\/60 {
+  background-color: var(--card-bg-sub);
+}
+html:not(.dark-mode) .bg-slate-950 {
+  background-color: var(--card-bg-sub);
+}
+html:not(.dark-mode) .bg-slate-950\/40 {
+  background-color: var(--sidebar-bg);
+}
+html:not(.dark-mode) .bg-slate-800\/80 {
+  background-color: var(--card-bg-sub);
+}
+
+/* Border color mapping overrides in light mode */
+html:not(.dark-mode) .border-slate-800\/80 {
+  border-color: var(--border-color);
+}
+html:not(.dark-mode) .border-slate-800\/60 {
+  border-color: var(--border-color);
+}
+html:not(.dark-mode) .border-slate-800\/50 {
+  border-color: var(--border-color);
+}
+html:not(.dark-mode) .border-slate-800\/40 {
+  border-color: var(--border-color);
+}
+html:not(.dark-mode) .border-slate-800\/30 {
+  border-color: var(--border-color);
+}
+html:not(.dark-mode) .border-slate-800 {
+  border-color: var(--border-color);
+}
+html:not(.dark-mode) .border-slate-700 {
+  border-color: var(--border-color);
+}
+html:not(.dark-mode) .divide-slate-850 > :not([hidden]) ~ :not([hidden]) {
+  border-color: var(--border-color);
+}
+
+/* Dropdown menus, selects, inputs in light mode */
+html:not(.dark-mode) select, html:not(.dark-mode) input {
+  background-color: var(--input-bg);
+  color: var(--text-heading);
+  border-color: var(--input-border);
+}
+
+/* Hover styles */
+html:not(.dark-mode) .hover\:bg-slate-900\/50:hover {
+  background-color: var(--card-bg-sub) !important;
+}
+html:not(.dark-mode) .hover\:text-slate-200:hover {
+  color: var(--text-heading) !important;
+}
+html:not(.dark-mode) .bg-slate-800 {
+  background-color: var(--card-bg-sub);
+  border: 1px solid var(--border-color);
+  color: var(--text-main) !important;
+}
+html:not(.dark-mode) .bg-slate-800:hover {
+  background-color: var(--border-color) !important;
+}
+
+/* Custom Select dropdown styled to match Executive Summary button style */
+.custom-select-premium {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: 0.5rem; /* rounded-lg */
+  padding: 0.375rem 2rem 0.375rem 0.75rem; /* px-3 py-1.5 */
+  font-size: 0.75rem; /* text-xs */
+  color: var(--text-main);
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2364748b%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 0.5rem 0.5rem; /* 8px 8px */
+  cursor: pointer;
+  outline: none;
+  transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+}
+
+.custom-select-premium:focus {
+  border-color: #10b981; /* accent green */
+  box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.2);
+}
+
+.custom-select-premium:hover {
+  background-color: var(--card-bg-sub);
+}
+
+/* =======================================================
+   DIALOGFLOW CX MESSENGER STYLING (GEMINI BOT)
+   ======================================================= */
+df-messenger {
+  --df-messenger-primary-color: #10b981;
+  --df-messenger-button-titlebar-color: #10b981;
+  --df-messenger-chat-background-color: var(--card-color);
+  --df-messenger-font-color: var(--text-main);
+  --df-messenger-font-family: 'Inter', sans-serif;
+  --df-messenger-user-message: var(--card-bg-sub);
+  --df-messenger-bot-message: var(--bg-color);
+  --df-messenger-chat-border-radius: 16px;
+  --df-messenger-chat-window-height: 480px;
+  --df-messenger-chat-window-width: 360px;
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+}
+
+

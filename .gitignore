@@ -1,0 +1,18 @@
+# Dependency directories (never commit these)
+node_modules/
+vendor/
+
+# Environment variables and secrets
+.env
+*.pem
+*.key
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# IDE and text editor configs
+.vscode/
+
+# Other
+deploy.sh

@@ -1,0 +1,12 @@
+[
+    "id_placa",
+    "distancia_km",
+    "duracion_minutos",
+    "origen",
+    "destino",
+    "tipo_combustible",
+    "hora_salida",
+    "dia_semana",
+    "mes",
+    "fin_semana"
+]

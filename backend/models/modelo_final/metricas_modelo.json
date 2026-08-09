@@ -1,0 +1,11 @@
+{
+    "MAE": 0.6629,
+    "RMSE": 1.1836,
+    "R2": 0.8646,
+    "MAPE": 1849.75,
+    "MAPE10": 26.92,
+    "ERROR_P10": 141.97,
+    "PRECISION_25": 64.82,
+    "SOBREESTIMACION_25": 24.32,
+    "SUBESTIMACION_25": 11.43
+}

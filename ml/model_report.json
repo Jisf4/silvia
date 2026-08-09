@@ -1,0 +1,1266 @@
+{
+  "diesel": {
+    "best_model_name": "13. Gradient Boosting",
+    "best_model_metrics": {
+      "mape": 12.182,
+      "mape10": 62.16,
+      "mae": 6.267,
+      "rmse": 9.11,
+      "r2": 0.75,
+      "overestimation_rate": 51.35,
+      "overestimation_avg": 6.904,
+      "underestimation_rate": 48.65,
+      "underestimation_avg": 5.595
+    },
+    "best_model_oot_metrics": {
+      "mape": 12.823,
+      "mape10": 49.55,
+      "mae": 7.572,
+      "rmse": 9.86,
+      "r2": 0.6422,
+      "overestimation_rate": 36.94,
+      "overestimation_avg": 6.256,
+      "underestimation_rate": 63.06,
+      "underestimation_avg": 8.343
+    },
+    "best_model_business": {
+      "anomaly_precision": 39.47,
+      "anomaly_recall": 93.75,
+      "fuel_saved": 413.1
+    },
+    "comparison": {
+      "1. Regresion Lineal": {
+        "train_metrics": {
+          "mape": 13.412,
+          "mape10": 49.81,
+          "mae": 7.776,
+          "rmse": 10.251,
+          "r2": 0.6417,
+          "overestimation_rate": 48.26,
+          "overestimation_avg": 8.056,
+          "underestimation_rate": 51.74,
+          "underestimation_avg": 7.515
+        },
+        "test_metrics": {
+          "mape": 20.902,
+          "mape10": 46.85,
+          "mae": 10.106,
+          "rmse": 20.33,
+          "r2": -0.2452,
+          "overestimation_rate": 54.05,
+          "overestimation_avg": 12.056,
+          "underestimation_rate": 45.95,
+          "underestimation_avg": 7.812
+        },
+        "oot_metrics": {
+          "mape": 16.225,
+          "mape10": 43.24,
+          "mae": 9.352,
+          "rmse": 12.396,
+          "r2": 0.4345,
+          "overestimation_rate": 45.95,
+          "overestimation_avg": 8.917,
+          "underestimation_rate": 54.05,
+          "underestimation_avg": 9.721
+        },
+        "business_metrics": {
+          "anomaly_precision": 35.71,
+          "anomaly_recall": 93.75,
+          "fuel_saved": 382.97
+        }
+      },
+      "2. Regresion Ridge": {
+        "train_metrics": {
+          "mape": 13.942,
+          "mape10": 48.46,
+          "mae": 8.113,
+          "rmse": 10.486,
+          "r2": 0.6251,
+          "overestimation_rate": 49.03,
+          "overestimation_avg": 8.272,
+          "underestimation_rate": 50.97,
+          "underestimation_avg": 7.959
+        },
+        "test_metrics": {
+          "mape": 20.182,
+          "mape10": 45.95,
+          "mae": 9.844,
+          "rmse": 18.446,
+          "r2": -0.0251,
+          "overestimation_rate": 49.55,
+          "overestimation_avg": 12.525,
+          "underestimation_rate": 50.45,
+          "underestimation_avg": 7.212
+        },
+        "oot_metrics": {
+          "mape": 15.779,
+          "mape10": 46.85,
+          "mae": 8.912,
+          "rmse": 12.054,
+          "r2": 0.4652,
+          "overestimation_rate": 46.85,
+          "overestimation_avg": 9.001,
+          "underestimation_rate": 53.15,
+          "underestimation_avg": 8.833
+        },
+        "business_metrics": {
+          "anomaly_precision": 40.0,
+          "anomaly_recall": 87.5,
+          "fuel_saved": 375.25
+        }
+      },
+      "3. Regresion Lasso": {
+        "train_metrics": {
+          "mape": 15.981,
+          "mape10": 42.47,
+          "mae": 9.344,
+          "rmse": 11.877,
+          "r2": 0.519,
+          "overestimation_rate": 50.0,
+          "overestimation_avg": 9.344,
+          "underestimation_rate": 50.0,
+          "underestimation_avg": 9.344
+        },
+        "test_metrics": {
+          "mape": 19.688,
+          "mape10": 51.35,
+          "mae": 9.842,
+          "rmse": 16.534,
+          "r2": 0.1764,
+          "overestimation_rate": 49.55,
+          "overestimation_avg": 11.958,
+          "underestimation_rate": 50.45,
+          "underestimation_avg": 7.765
+        },
+        "oot_metrics": {
+          "mape": 16.082,
+          "mape10": 48.65,
+          "mae": 8.848,
+          "rmse": 11.807,
+          "r2": 0.4869,
+          "overestimation_rate": 50.45,
+          "overestimation_avg": 9.191,
+          "underestimation_rate": 49.55,
+          "underestimation_avg": 8.499
+        },
+        "business_metrics": {
+          "anomaly_precision": 48.28,
+          "anomaly_recall": 87.5,
+          "fuel_saved": 367.75
+        }
+      },
+      "4. Regresion ElasticNet": {
+        "train_metrics": {
+          "mape": 16.269,
+          "mape10": 42.86,
+          "mae": 9.474,
+          "rmse": 12.082,
+          "r2": 0.5023,
+          "overestimation_rate": 49.81,
+          "overestimation_avg": 9.511,
+          "underestimation_rate": 50.19,
+          "underestimation_avg": 9.438
+        },
+        "test_metrics": {
+          "mape": 20.349,
+          "mape10": 52.25,
+          "mae": 10.174,
+          "rmse": 17.583,
+          "r2": 0.0686,
+          "overestimation_rate": 52.25,
+          "overestimation_avg": 11.957,
+          "underestimation_rate": 47.75,
+          "underestimation_avg": 8.223
+        },
+        "oot_metrics": {
+          "mape": 16.996,
+          "mape10": 44.14,
+          "mae": 9.583,
+          "rmse": 12.472,
+          "r2": 0.4275,
+          "overestimation_rate": 47.75,
+          "overestimation_avg": 9.382,
+          "underestimation_rate": 52.25,
+          "underestimation_avg": 9.767
+        },
+        "business_metrics": {
+          "anomaly_precision": 41.18,
+          "anomaly_recall": 87.5,
+          "fuel_saved": 381.63
+        }
+      },
+      "5. Regresion Huber": {
+        "train_metrics": {
+          "mape": 10.777,
+          "mape10": 64.67,
+          "mae": 6.44,
+          "rmse": 9.705,
+          "r2": 0.6789,
+          "overestimation_rate": 50.77,
+          "overestimation_avg": 6.049,
+          "underestimation_rate": 49.23,
+          "underestimation_avg": 6.843
+        },
+        "test_metrics": {
+          "mape": 20.255,
+          "mape10": 66.67,
+          "mae": 9.164,
+          "rmse": 38.234,
+          "r2": -3.404,
+          "overestimation_rate": 56.76,
+          "overestimation_avg": 11.833,
+          "underestimation_rate": 43.24,
+          "underestimation_avg": 5.66
+        },
+        "oot_metrics": {
+          "mape": 15.785,
+          "mape10": 36.94,
+          "mae": 9.99,
+          "rmse": 14.479,
+          "r2": 0.2284,
+          "overestimation_rate": 35.14,
+          "overestimation_avg": 8.528,
+          "underestimation_rate": 64.86,
+          "underestimation_avg": 10.782
+        },
+        "business_metrics": {
+          "anomaly_precision": 26.42,
+          "anomaly_recall": 87.5,
+          "fuel_saved": 436.72
+        }
+      },
+      "6. K-Neighbors Regressor": {
+        "train_metrics": {
+          "mape": 11.468,
+          "mape10": 60.42,
+          "mae": 6.827,
+          "rmse": 8.979,
+          "r2": 0.7251,
+          "overestimation_rate": 50.39,
+          "overestimation_avg": 6.717,
+          "underestimation_rate": 49.61,
+          "underestimation_avg": 6.938
+        },
+        "test_metrics": {
+          "mape": 13.629,
+          "mape10": 55.86,
+          "mae": 7.03,
+          "rmse": 9.738,
+          "r2": 0.7143,
+          "overestimation_rate": 51.35,
+          "overestimation_avg": 7.825,
+          "underestimation_rate": 48.65,
+          "underestimation_avg": 6.191
+        },
+        "oot_metrics": {
+          "mape": 15.281,
+          "mape10": 36.94,
+          "mae": 9.049,
+          "rmse": 11.574,
+          "r2": 0.5069,
+          "overestimation_rate": 42.34,
+          "overestimation_avg": 7.103,
+          "underestimation_rate": 57.66,
+          "underestimation_avg": 10.477
+        },
+        "business_metrics": {
+          "anomaly_precision": 34.88,
+          "anomaly_recall": 93.75,
+          "fuel_saved": 397.06
+        }
+      },
+      "7. SVR (Kernel Lineal)": {
+        "train_metrics": {
+          "mape": 12.641,
+          "mape10": 58.11,
+          "mae": 7.57,
+          "rmse": 13.954,
+          "r2": 0.3361,
+          "overestimation_rate": 50.0,
+          "overestimation_avg": 7.903,
+          "underestimation_rate": 50.0,
+          "underestimation_avg": 7.237
+        },
+        "test_metrics": {
+          "mape": 21.386,
+          "mape10": 63.06,
+          "mae": 9.703,
+          "rmse": 39.372,
+          "r2": -3.67,
+          "overestimation_rate": 54.95,
+          "overestimation_avg": 13.045,
+          "underestimation_rate": 45.05,
+          "underestimation_avg": 5.626
+        },
+        "oot_metrics": {
+          "mape": 15.534,
+          "mape10": 48.65,
+          "mae": 9.525,
+          "rmse": 19.635,
+          "r2": -0.419,
+          "overestimation_rate": 41.44,
+          "overestimation_avg": 10.159,
+          "underestimation_rate": 58.56,
+          "underestimation_avg": 9.077
+        },
+        "business_metrics": {
+          "anomaly_precision": 38.46,
+          "anomaly_recall": 93.75,
+          "fuel_saved": 413.32
+        }
+      },
+      "8. SVR (Kernel RBF)": {
+        "train_metrics": {
+          "mape": 12.684,
+          "mape10": 54.25,
+          "mae": 7.498,
+          "rmse": 9.912,
+          "r2": 0.665,
+          "overestimation_rate": 50.19,
+          "overestimation_avg": 7.21,
+          "underestimation_rate": 49.81,
+          "underestimation_avg": 7.79
+        },
+        "test_metrics": {
+          "mape": 14.811,
+          "mape10": 53.15,
+          "mae": 7.751,
+          "rmse": 10.763,
+          "r2": 0.651,
+          "overestimation_rate": 56.76,
+          "overestimation_avg": 7.726,
+          "underestimation_rate": 43.24,
+          "underestimation_avg": 7.783
+        },
+        "oot_metrics": {
+          "mape": 14.448,
+          "mape10": 47.75,
+          "mae": 8.661,
+          "rmse": 11.256,
+          "r2": 0.5337,
+          "overestimation_rate": 42.34,
+          "overestimation_avg": 7.214,
+          "underestimation_rate": 57.66,
+          "underestimation_avg": 9.723
+        },
+        "business_metrics": {
+          "anomaly_precision": 36.59,
+          "anomaly_recall": 93.75,
+          "fuel_saved": 407.69
+        }
+      },
+      "9. Decision Tree": {
+        "train_metrics": {
+          "mape": 13.659,
+          "mape10": 50.77,
+          "mae": 7.973,
+          "rmse": 10.331,
+          "r2": 0.6361,
+          "overestimation_rate": 49.61,
+          "overestimation_avg": 8.035,
+          "underestimation_rate": 50.39,
+          "underestimation_avg": 7.912
+        },
+        "test_metrics": {
+          "mape": 16.295,
+          "mape10": 47.75,
+          "mae": 8.407,
+          "rmse": 11.478,
+          "r2": 0.6031,
+          "overestimation_rate": 50.45,
+          "overestimation_avg": 9.966,
+          "underestimation_rate": 49.55,
+          "underestimation_avg": 6.82
+        },
+        "oot_metrics": {
+          "mape": 15.146,
+          "mape10": 41.44,
+          "mae": 8.415,
+          "rmse": 10.234,
+          "r2": 0.6145,
+          "overestimation_rate": 51.35,
+          "overestimation_avg": 8.808,
+          "underestimation_rate": 48.65,
+          "underestimation_avg": 8.0
+        },
+        "business_metrics": {
+          "anomaly_precision": 40.62,
+          "anomaly_recall": 81.25,
+          "fuel_saved": 362.5
+        }
+      },
+      "10. Random Forest": {
+        "train_metrics": {
+          "mape": 12.416,
+          "mape10": 56.76,
+          "mae": 7.33,
+          "rmse": 9.656,
+          "r2": 0.6821,
+          "overestimation_rate": 50.77,
+          "overestimation_avg": 7.237,
+          "underestimation_rate": 49.23,
+          "underestimation_avg": 7.426
+        },
+        "test_metrics": {
+          "mape": 14.882,
+          "mape10": 56.76,
+          "mae": 7.48,
+          "rmse": 10.414,
+          "r2": 0.6732,
+          "overestimation_rate": 49.55,
+          "overestimation_avg": 9.345,
+          "underestimation_rate": 50.45,
+          "underestimation_avg": 5.649
+        },
+        "oot_metrics": {
+          "mape": 14.482,
+          "mape10": 46.85,
+          "mae": 8.059,
+          "rmse": 10.147,
+          "r2": 0.621,
+          "overestimation_rate": 48.65,
+          "overestimation_avg": 7.556,
+          "underestimation_rate": 51.35,
+          "underestimation_avg": 8.536
+        },
+        "business_metrics": {
+          "anomaly_precision": 39.39,
+          "anomaly_recall": 81.25,
+          "fuel_saved": 381.96
+        }
+      },
+      "11. Extra Trees": {
+        "train_metrics": {
+          "mape": 14.728,
+          "mape10": 49.61,
+          "mae": 8.558,
+          "rmse": 10.931,
+          "r2": 0.5926,
+          "overestimation_rate": 49.03,
+          "overestimation_avg": 8.726,
+          "underestimation_rate": 50.97,
+          "underestimation_avg": 8.396
+        },
+        "test_metrics": {
+          "mape": 17.152,
+          "mape10": 47.75,
+          "mae": 8.898,
+          "rmse": 11.699,
+          "r2": 0.5876,
+          "overestimation_rate": 55.86,
+          "overestimation_avg": 9.223,
+          "underestimation_rate": 44.14,
+          "underestimation_avg": 8.486
+        },
+        "oot_metrics": {
+          "mape": 15.586,
+          "mape10": 45.95,
+          "mae": 8.53,
+          "rmse": 10.86,
+          "r2": 0.5659,
+          "overestimation_rate": 49.55,
+          "overestimation_avg": 9.377,
+          "underestimation_rate": 50.45,
+          "underestimation_avg": 7.698
+        },
+        "business_metrics": {
+          "anomaly_precision": 44.83,
+          "anomaly_recall": 81.25,
+          "fuel_saved": 329.04
+        }
+      },
+      "12. AdaBoost": {
+        "train_metrics": {
+          "mape": 13.213,
+          "mape10": 56.76,
+          "mae": 7.496,
+          "rmse": 9.813,
+          "r2": 0.6717,
+          "overestimation_rate": 53.28,
+          "overestimation_avg": 7.538,
+          "underestimation_rate": 46.72,
+          "underestimation_avg": 7.449
+        },
+        "test_metrics": {
+          "mape": 16.221,
+          "mape10": 54.95,
+          "mae": 8.074,
+          "rmse": 10.962,
+          "r2": 0.638,
+          "overestimation_rate": 57.66,
+          "overestimation_avg": 9.365,
+          "underestimation_rate": 42.34,
+          "underestimation_avg": 6.317
+        },
+        "oot_metrics": {
+          "mape": 15.561,
+          "mape10": 46.85,
+          "mae": 8.492,
+          "rmse": 10.691,
+          "r2": 0.5793,
+          "overestimation_rate": 48.65,
+          "overestimation_avg": 8.244,
+          "underestimation_rate": 51.35,
+          "underestimation_avg": 8.726
+        },
+        "business_metrics": {
+          "anomaly_precision": 39.39,
+          "anomaly_recall": 81.25,
+          "fuel_saved": 367.93
+        }
+      },
+      "13. Gradient Boosting": {
+        "train_metrics": {
+          "mape": 9.379,
+          "mape10": 69.11,
+          "mae": 5.62,
+          "rmse": 7.503,
+          "r2": 0.8081,
+          "overestimation_rate": 53.09,
+          "overestimation_avg": 5.293,
+          "underestimation_rate": 46.91,
+          "underestimation_avg": 5.99
+        },
+        "test_metrics": {
+          "mape": 12.182,
+          "mape10": 62.16,
+          "mae": 6.267,
+          "rmse": 9.11,
+          "r2": 0.75,
+          "overestimation_rate": 51.35,
+          "overestimation_avg": 6.904,
+          "underestimation_rate": 48.65,
+          "underestimation_avg": 5.595
+        },
+        "oot_metrics": {
+          "mape": 12.823,
+          "mape10": 49.55,
+          "mae": 7.572,
+          "rmse": 9.86,
+          "r2": 0.6422,
+          "overestimation_rate": 36.94,
+          "overestimation_avg": 6.256,
+          "underestimation_rate": 63.06,
+          "underestimation_avg": 8.343
+        },
+        "business_metrics": {
+          "anomaly_precision": 39.47,
+          "anomaly_recall": 93.75,
+          "fuel_saved": 413.1
+        }
+      },
+      "14. Hist Gradient Boosting": {
+        "train_metrics": {
+          "mape": 10.392,
+          "mape10": 64.09,
+          "mae": 6.193,
+          "rmse": 8.181,
+          "r2": 0.7718,
+          "overestimation_rate": 54.05,
+          "overestimation_avg": 5.729,
+          "underestimation_rate": 45.95,
+          "underestimation_avg": 6.74
+        },
+        "test_metrics": {
+          "mape": 13.188,
+          "mape10": 54.95,
+          "mae": 6.766,
+          "rmse": 9.648,
+          "r2": 0.7195,
+          "overestimation_rate": 50.45,
+          "overestimation_avg": 7.774,
+          "underestimation_rate": 49.55,
+          "underestimation_avg": 5.741
+        },
+        "oot_metrics": {
+          "mape": 13.253,
+          "mape10": 54.05,
+          "mae": 7.671,
+          "rmse": 9.873,
+          "r2": 0.6412,
+          "overestimation_rate": 39.64,
+          "overestimation_avg": 7.099,
+          "underestimation_rate": 60.36,
+          "underestimation_avg": 8.047
+        },
+        "business_metrics": {
+          "anomaly_precision": 41.18,
+          "anomaly_recall": 87.5,
+          "fuel_saved": 394.88
+        }
+      },
+      "15. MLP Neural Network": {
+        "train_metrics": {
+          "mape": 10.544,
+          "mape10": 64.29,
+          "mae": 6.175,
+          "rmse": 8.124,
+          "r2": 0.775,
+          "overestimation_rate": 51.16,
+          "overestimation_avg": 6.315,
+          "underestimation_rate": 48.84,
+          "underestimation_avg": 6.029
+        },
+        "test_metrics": {
+          "mape": 15.447,
+          "mape10": 60.36,
+          "mae": 7.334,
+          "rmse": 14.644,
+          "r2": 0.3539,
+          "overestimation_rate": 58.56,
+          "overestimation_avg": 8.37,
+          "underestimation_rate": 41.44,
+          "underestimation_avg": 5.871
+        },
+        "oot_metrics": {
+          "mape": 15.172,
+          "mape10": 44.14,
+          "mae": 9.385,
+          "rmse": 12.886,
+          "r2": 0.3889,
+          "overestimation_rate": 38.74,
+          "overestimation_avg": 7.631,
+          "underestimation_rate": 61.26,
+          "underestimation_avg": 10.494
+        },
+        "business_metrics": {
+          "anomaly_precision": 34.09,
+          "anomaly_recall": 93.75,
+          "fuel_saved": 436.47
+        }
+      }
+    }
+  },
+  "gnv": {
+    "best_model_name": "14. Hist Gradient Boosting",
+    "best_model_metrics": {
+      "mape": 24.164,
+      "mape10": 24.85,
+      "mae": 32.186,
+      "rmse": 39.359,
+      "r2": 0.1765,
+      "overestimation_rate": 55.15,
+      "overestimation_avg": 29.44,
+      "underestimation_rate": 44.85,
+      "underestimation_avg": 35.563
+    },
+    "best_model_oot_metrics": {
+      "mape": 26.375,
+      "mape10": 29.7,
+      "mae": 28.224,
+      "rmse": 36.769,
+      "r2": -0.0754,
+      "overestimation_rate": 65.45,
+      "overestimation_avg": 30.011,
+      "underestimation_rate": 34.55,
+      "underestimation_avg": 24.837
+    },
+    "best_model_business": {
+      "anomaly_precision": 35.29,
+      "anomaly_recall": 50.0,
+      "fuel_saved": 584.08
+    },
+    "comparison": {
+      "1. Regresion Lineal": {
+        "train_metrics": {
+          "mape": 22.357,
+          "mape10": 30.99,
+          "mae": 27.452,
+          "rmse": 33.996,
+          "r2": 0.2796,
+          "overestimation_rate": 49.48,
+          "overestimation_avg": 27.741,
+          "underestimation_rate": 50.52,
+          "underestimation_avg": 27.169
+        },
+        "test_metrics": {
+          "mape": 28.737,
+          "mape10": 27.88,
+          "mae": 36.568,
+          "rmse": 75.228,
+          "r2": -2.0083,
+          "overestimation_rate": 53.33,
+          "overestimation_avg": 36.481,
+          "underestimation_rate": 46.67,
+          "underestimation_avg": 36.666
+        },
+        "oot_metrics": {
+          "mape": 26.912,
+          "mape10": 32.12,
+          "mae": 30.063,
+          "rmse": 39.099,
+          "r2": -0.216,
+          "overestimation_rate": 63.03,
+          "overestimation_avg": 31.794,
+          "underestimation_rate": 36.97,
+          "underestimation_avg": 27.111
+        },
+        "business_metrics": {
+          "anomaly_precision": 31.58,
+          "anomaly_recall": 50.0,
+          "fuel_saved": 776.14
+        }
+      },
+      "2. Regresion Ridge": {
+        "train_metrics": {
+          "mape": 22.452,
+          "mape10": 31.12,
+          "mae": 27.479,
+          "rmse": 34.065,
+          "r2": 0.2767,
+          "overestimation_rate": 50.13,
+          "overestimation_avg": 27.408,
+          "underestimation_rate": 49.87,
+          "underestimation_avg": 27.551
+        },
+        "test_metrics": {
+          "mape": 29.26,
+          "mape10": 26.67,
+          "mae": 36.916,
+          "rmse": 79.562,
+          "r2": -2.3649,
+          "overestimation_rate": 53.94,
+          "overestimation_avg": 36.963,
+          "underestimation_rate": 46.06,
+          "underestimation_avg": 36.862
+        },
+        "oot_metrics": {
+          "mape": 26.477,
+          "mape10": 32.12,
+          "mae": 29.465,
+          "rmse": 38.519,
+          "r2": -0.1801,
+          "overestimation_rate": 63.64,
+          "overestimation_avg": 30.753,
+          "underestimation_rate": 36.36,
+          "underestimation_avg": 27.212
+        },
+        "business_metrics": {
+          "anomaly_precision": 33.33,
+          "anomaly_recall": 50.0,
+          "fuel_saved": 772.51
+        }
+      },
+      "3. Regresion Lasso": {
+        "train_metrics": {
+          "mape": 23.606,
+          "mape10": 29.56,
+          "mae": 28.669,
+          "rmse": 35.41,
+          "r2": 0.2185,
+          "overestimation_rate": 48.31,
+          "overestimation_avg": 29.674,
+          "underestimation_rate": 51.69,
+          "underestimation_avg": 27.73
+        },
+        "test_metrics": {
+          "mape": 29.954,
+          "mape10": 25.45,
+          "mae": 37.281,
+          "rmse": 76.638,
+          "r2": -2.1221,
+          "overestimation_rate": 52.12,
+          "overestimation_avg": 39.67,
+          "underestimation_rate": 47.88,
+          "underestimation_avg": 34.681
+        },
+        "oot_metrics": {
+          "mape": 26.027,
+          "mape10": 30.3,
+          "mae": 28.488,
+          "rmse": 37.142,
+          "r2": -0.0973,
+          "overestimation_rate": 66.06,
+          "overestimation_avg": 29.114,
+          "underestimation_rate": 33.94,
+          "underestimation_avg": 27.269
+        },
+        "business_metrics": {
+          "anomaly_precision": 37.14,
+          "anomaly_recall": 54.17,
+          "fuel_saved": 712.32
+        }
+      },
+      "4. Regresion ElasticNet": {
+        "train_metrics": {
+          "mape": 24.535,
+          "mape10": 29.04,
+          "mae": 29.589,
+          "rmse": 36.629,
+          "r2": 0.1638,
+          "overestimation_rate": 47.79,
+          "overestimation_avg": 30.959,
+          "underestimation_rate": 52.21,
+          "underestimation_avg": 28.334
+        },
+        "test_metrics": {
+          "mape": 28.972,
+          "mape10": 26.67,
+          "mae": 36.464,
+          "rmse": 65.645,
+          "r2": -1.2907,
+          "overestimation_rate": 53.33,
+          "overestimation_avg": 36.439,
+          "underestimation_rate": 46.67,
+          "underestimation_avg": 36.492
+        },
+        "oot_metrics": {
+          "mape": 25.881,
+          "mape10": 29.09,
+          "mae": 28.285,
+          "rmse": 36.199,
+          "r2": -0.0423,
+          "overestimation_rate": 63.03,
+          "overestimation_avg": 30.049,
+          "underestimation_rate": 36.97,
+          "underestimation_avg": 25.277
+        },
+        "business_metrics": {
+          "anomaly_precision": 35.0,
+          "anomaly_recall": 58.33,
+          "fuel_saved": 670.69
+        }
+      },
+      "5. Regresion Huber": {
+        "train_metrics": {
+          "mape": 22.203,
+          "mape10": 32.29,
+          "mae": 27.219,
+          "rmse": 34.198,
+          "r2": 0.2711,
+          "overestimation_rate": 49.35,
+          "overestimation_avg": 27.572,
+          "underestimation_rate": 50.65,
+          "underestimation_avg": 26.875
+        },
+        "test_metrics": {
+          "mape": 29.091,
+          "mape10": 26.06,
+          "mae": 37.227,
+          "rmse": 79.599,
+          "r2": -2.368,
+          "overestimation_rate": 49.09,
+          "overestimation_avg": 38.6,
+          "underestimation_rate": 50.91,
+          "underestimation_avg": 35.903
+        },
+        "oot_metrics": {
+          "mape": 26.332,
+          "mape10": 30.3,
+          "mae": 29.829,
+          "rmse": 38.723,
+          "r2": -0.1927,
+          "overestimation_rate": 63.64,
+          "overestimation_avg": 29.742,
+          "underestimation_rate": 36.36,
+          "underestimation_avg": 29.98
+        },
+        "business_metrics": {
+          "anomaly_precision": 32.43,
+          "anomaly_recall": 50.0,
+          "fuel_saved": 809.22
+        }
+      },
+      "6. K-Neighbors Regressor": {
+        "train_metrics": {
+          "mape": 18.667,
+          "mape10": 39.97,
+          "mae": 23.042,
+          "rmse": 29.494,
+          "r2": 0.4578,
+          "overestimation_rate": 45.96,
+          "overestimation_avg": 23.601,
+          "underestimation_rate": 54.04,
+          "underestimation_avg": 22.565
+        },
+        "test_metrics": {
+          "mape": 26.294,
+          "mape10": 23.64,
+          "mae": 35.148,
+          "rmse": 42.903,
+          "r2": 0.0215,
+          "overestimation_rate": 49.7,
+          "overestimation_avg": 37.338,
+          "underestimation_rate": 50.3,
+          "underestimation_avg": 32.984
+        },
+        "oot_metrics": {
+          "mape": 30.125,
+          "mape10": 30.3,
+          "mae": 32.897,
+          "rmse": 43.43,
+          "r2": -0.5003,
+          "overestimation_rate": 66.67,
+          "overestimation_avg": 35.127,
+          "underestimation_rate": 33.33,
+          "underestimation_avg": 28.437
+        },
+        "business_metrics": {
+          "anomaly_precision": 35.9,
+          "anomaly_recall": 58.33,
+          "fuel_saved": 627.33
+        }
+      },
+      "7. SVR (Kernel Lineal)": {
+        "train_metrics": {
+          "mape": 24.211,
+          "mape10": 31.51,
+          "mae": 28.675,
+          "rmse": 36.0,
+          "r2": 0.1922,
+          "overestimation_rate": 50.0,
+          "overestimation_avg": 30.673,
+          "underestimation_rate": 50.0,
+          "underestimation_avg": 26.676
+        },
+        "test_metrics": {
+          "mape": 28.856,
+          "mape10": 23.64,
+          "mae": 36.306,
+          "rmse": 66.109,
+          "r2": -1.3232,
+          "overestimation_rate": 53.33,
+          "overestimation_avg": 36.876,
+          "underestimation_rate": 46.67,
+          "underestimation_avg": 35.655
+        },
+        "oot_metrics": {
+          "mape": 26.141,
+          "mape10": 26.06,
+          "mae": 28.589,
+          "rmse": 36.247,
+          "r2": -0.0451,
+          "overestimation_rate": 65.45,
+          "overestimation_avg": 29.488,
+          "underestimation_rate": 34.55,
+          "underestimation_avg": 26.887
+        },
+        "business_metrics": {
+          "anomaly_precision": 36.11,
+          "anomaly_recall": 54.17,
+          "fuel_saved": 666.6
+        }
+      },
+      "8. SVR (Kernel RBF)": {
+        "train_metrics": {
+          "mape": 25.582,
+          "mape10": 29.56,
+          "mae": 30.341,
+          "rmse": 37.741,
+          "r2": 0.1122,
+          "overestimation_rate": 49.87,
+          "overestimation_avg": 32.563,
+          "underestimation_rate": 50.13,
+          "underestimation_avg": 28.13
+        },
+        "test_metrics": {
+          "mape": 25.138,
+          "mape10": 25.45,
+          "mae": 33.613,
+          "rmse": 41.441,
+          "r2": 0.0871,
+          "overestimation_rate": 53.33,
+          "overestimation_avg": 29.411,
+          "underestimation_rate": 46.67,
+          "underestimation_avg": 38.416
+        },
+        "oot_metrics": {
+          "mape": 26.276,
+          "mape10": 29.7,
+          "mae": 28.631,
+          "rmse": 36.23,
+          "r2": -0.044,
+          "overestimation_rate": 64.24,
+          "overestimation_avg": 29.992,
+          "underestimation_rate": 35.76,
+          "underestimation_avg": 26.187
+        },
+        "business_metrics": {
+          "anomaly_precision": 34.29,
+          "anomaly_recall": 50.0,
+          "fuel_saved": 597.7
+        }
+      },
+      "9. Decision Tree": {
+        "train_metrics": {
+          "mape": 21.608,
+          "mape10": 34.9,
+          "mae": 26.372,
+          "rmse": 33.442,
+          "r2": 0.3029,
+          "overestimation_rate": 49.22,
+          "overestimation_avg": 26.791,
+          "underestimation_rate": 50.78,
+          "underestimation_avg": 25.966
+        },
+        "test_metrics": {
+          "mape": 26.447,
+          "mape10": 23.64,
+          "mae": 34.789,
+          "rmse": 42.568,
+          "r2": 0.0368,
+          "overestimation_rate": 53.94,
+          "overestimation_avg": 34.604,
+          "underestimation_rate": 46.06,
+          "underestimation_avg": 35.005
+        },
+        "oot_metrics": {
+          "mape": 29.496,
+          "mape10": 27.88,
+          "mae": 31.643,
+          "rmse": 41.839,
+          "r2": -0.3924,
+          "overestimation_rate": 62.42,
+          "overestimation_avg": 35.695,
+          "underestimation_rate": 37.58,
+          "underestimation_avg": 24.912
+        },
+        "business_metrics": {
+          "anomaly_precision": 29.73,
+          "anomaly_recall": 45.83,
+          "fuel_saved": 544.35
+        }
+      },
+      "10. Random Forest": {
+        "train_metrics": {
+          "mape": 21.262,
+          "mape10": 35.03,
+          "mae": 25.847,
+          "rmse": 32.73,
+          "r2": 0.3323,
+          "overestimation_rate": 50.52,
+          "overestimation_avg": 25.622,
+          "underestimation_rate": 49.48,
+          "underestimation_avg": 26.076
+        },
+        "test_metrics": {
+          "mape": 25.04,
+          "mape10": 23.64,
+          "mae": 33.048,
+          "rmse": 40.235,
+          "r2": 0.1395,
+          "overestimation_rate": 56.97,
+          "overestimation_avg": 31.141,
+          "underestimation_rate": 43.03,
+          "underestimation_avg": 35.573
+        },
+        "oot_metrics": {
+          "mape": 28.007,
+          "mape10": 30.3,
+          "mae": 30.022,
+          "rmse": 39.381,
+          "r2": -0.2336,
+          "overestimation_rate": 63.64,
+          "overestimation_avg": 33.267,
+          "underestimation_rate": 36.36,
+          "underestimation_avg": 24.344
+        },
+        "business_metrics": {
+          "anomaly_precision": 34.29,
+          "anomaly_recall": 50.0,
+          "fuel_saved": 571.91
+        }
+      },
+      "11. Extra Trees": {
+        "train_metrics": {
+          "mape": 22.878,
+          "mape10": 30.47,
+          "mae": 27.868,
+          "rmse": 34.431,
+          "r2": 0.2611,
+          "overestimation_rate": 48.83,
+          "overestimation_avg": 28.537,
+          "underestimation_rate": 51.17,
+          "underestimation_avg": 27.23
+        },
+        "test_metrics": {
+          "mape": 24.334,
+          "mape10": 26.67,
+          "mae": 33.105,
+          "rmse": 40.022,
+          "r2": 0.1485,
+          "overestimation_rate": 52.73,
+          "overestimation_avg": 29.685,
+          "underestimation_rate": 47.27,
+          "underestimation_avg": 36.919
+        },
+        "oot_metrics": {
+          "mape": 27.65,
+          "mape10": 26.06,
+          "mae": 30.216,
+          "rmse": 38.136,
+          "r2": -0.1568,
+          "overestimation_rate": 64.85,
+          "overestimation_avg": 32.617,
+          "underestimation_rate": 35.15,
+          "underestimation_avg": 25.788
+        },
+        "business_metrics": {
+          "anomaly_precision": 27.78,
+          "anomaly_recall": 41.67,
+          "fuel_saved": 592.81
+        }
+      },
+      "12. AdaBoost": {
+        "train_metrics": {
+          "mape": 21.292,
+          "mape10": 33.85,
+          "mae": 25.908,
+          "rmse": 32.539,
+          "r2": 0.3401,
+          "overestimation_rate": 49.09,
+          "overestimation_avg": 25.755,
+          "underestimation_rate": 50.91,
+          "underestimation_avg": 26.056
+        },
+        "test_metrics": {
+          "mape": 25.183,
+          "mape10": 23.03,
+          "mae": 33.266,
+          "rmse": 40.418,
+          "r2": 0.1316,
+          "overestimation_rate": 54.55,
+          "overestimation_avg": 33.021,
+          "underestimation_rate": 45.45,
+          "underestimation_avg": 33.56
+        },
+        "oot_metrics": {
+          "mape": 28.838,
+          "mape10": 29.09,
+          "mae": 30.874,
+          "rmse": 40.881,
+          "r2": -0.3293,
+          "overestimation_rate": 62.42,
+          "overestimation_avg": 35.741,
+          "underestimation_rate": 37.58,
+          "underestimation_avg": 22.789
+        },
+        "business_metrics": {
+          "anomaly_precision": 35.29,
+          "anomaly_recall": 50.0,
+          "fuel_saved": 531.52
+        }
+      },
+      "13. Gradient Boosting": {
+        "train_metrics": {
+          "mape": 21.851,
+          "mape10": 34.11,
+          "mae": 26.474,
+          "rmse": 33.298,
+          "r2": 0.3089,
+          "overestimation_rate": 50.39,
+          "overestimation_avg": 26.269,
+          "underestimation_rate": 49.61,
+          "underestimation_avg": 26.683
+        },
+        "test_metrics": {
+          "mape": 24.229,
+          "mape10": 24.24,
+          "mae": 32.271,
+          "rmse": 39.473,
+          "r2": 0.1718,
+          "overestimation_rate": 53.94,
+          "overestimation_avg": 30.178,
+          "underestimation_rate": 46.06,
+          "underestimation_avg": 34.723
+        },
+        "oot_metrics": {
+          "mape": 26.447,
+          "mape10": 29.09,
+          "mae": 28.328,
+          "rmse": 36.84,
+          "r2": -0.0795,
+          "overestimation_rate": 65.45,
+          "overestimation_avg": 30.096,
+          "underestimation_rate": 34.55,
+          "underestimation_avg": 24.98
+        },
+        "business_metrics": {
+          "anomaly_precision": 33.33,
+          "anomaly_recall": 45.83,
+          "fuel_saved": 583.53
+        }
+      },
+      "14. Hist Gradient Boosting": {
+        "train_metrics": {
+          "mape": 21.902,
+          "mape10": 34.24,
+          "mae": 26.537,
+          "rmse": 33.368,
+          "r2": 0.306,
+          "overestimation_rate": 50.39,
+          "overestimation_avg": 26.332,
+          "underestimation_rate": 49.61,
+          "underestimation_avg": 26.746
+        },
+        "test_metrics": {
+          "mape": 24.164,
+          "mape10": 24.85,
+          "mae": 32.186,
+          "rmse": 39.359,
+          "r2": 0.1765,
+          "overestimation_rate": 55.15,
+          "overestimation_avg": 29.44,
+          "underestimation_rate": 44.85,
+          "underestimation_avg": 35.563
+        },
+        "oot_metrics": {
+          "mape": 26.375,
+          "mape10": 29.7,
+          "mae": 28.224,
+          "rmse": 36.769,
+          "r2": -0.0754,
+          "overestimation_rate": 65.45,
+          "overestimation_avg": 30.011,
+          "underestimation_rate": 34.55,
+          "underestimation_avg": 24.837
+        },
+        "business_metrics": {
+          "anomaly_precision": 35.29,
+          "anomaly_recall": 50.0,
+          "fuel_saved": 584.08
+        }
+      },
+      "15. MLP Neural Network": {
+        "train_metrics": {
+          "mape": 21.643,
+          "mape10": 32.03,
+          "mae": 26.754,
+          "rmse": 32.924,
+          "r2": 0.3244,
+          "overestimation_rate": 49.87,
+          "overestimation_avg": 26.604,
+          "underestimation_rate": 50.13,
+          "underestimation_avg": 26.903
+        },
+        "test_metrics": {
+          "mape": 34.442,
+          "mape10": 20.61,
+          "mae": 41.551,
+          "rmse": 115.173,
+          "r2": -6.0512,
+          "overestimation_rate": 51.52,
+          "overestimation_avg": 48.261,
+          "underestimation_rate": 48.48,
+          "underestimation_avg": 34.422
+        },
+        "oot_metrics": {
+          "mape": 29.346,
+          "mape10": 28.48,
+          "mae": 32.297,
+          "rmse": 42.159,
+          "r2": -0.4137,
+          "overestimation_rate": 63.03,
+          "overestimation_avg": 37.291,
+          "underestimation_rate": 36.97,
+          "underestimation_avg": 23.783
+        },
+        "business_metrics": {
+          "anomaly_precision": 32.35,
+          "anomaly_recall": 45.83,
+          "fuel_saved": 654.06
+        }
+      }
+    }
+  }
+}
