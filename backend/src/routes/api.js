@@ -5,7 +5,13 @@ import fs from 'fs';
 import path from 'path';
 import { exec } from 'child_process';
 
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const router = express.Router();
+
 // In‑memory store for preliquidación jobs
 const preliqJobs = {};
 const bigquery = new BigQuery({ projectId: process.env.GOOGLE_CLOUD_PROJECT || 'project-silvia-500416' });
@@ -3235,8 +3241,8 @@ async function processBatchInBg(jobId) {
       const pythonCmd = process.env.PYTHON_CMD || '/opt/miniconda3/bin/conda run -n silvia python';
       
       const defaultScript = isPreliq 
-        ? '/home/josue/Documents/SILVIA/project/process_upload_pdf.py' 
-        : '/home/josue/Documents/SILVIA/project/process_upload_excel.py';
+        ? path.join(__dirname, '..', 'scripts', 'process_upload_pdf.py') 
+        : path.join(__dirname, '..', 'scripts', 'process_upload_excel.py');
       const scriptPath = (isPreliq ? process.env.PROCESS_PDF_SCRIPT : process.env.PROCESS_EXCEL_SCRIPT) || defaultScript;
       
       const cmd = isPreliq 

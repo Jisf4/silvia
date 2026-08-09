@@ -24,9 +24,6 @@ COPY backend/src ./src
 # Copiar el prompt del agente
 COPY backend/docs/prompt.txt ./docs/prompt.txt
 
-# Copiar scripts de Python del nivel superior necesarios para el backend
-COPY process_upload_pdf.py ./
-
 # Copiar la base de datos local de CSVs de consulta/lookup
 COPY processed_data ./processed_data
 
@@ -38,7 +35,8 @@ RUN pip install --no-cache-dir google-genai pandas pypdf
 # Configurar variables de entorno para que apunten a las rutas de producción en el contenedor
 ENV PORT=8080
 ENV PYTHON_CMD="python3"
-ENV PROCESS_PDF_SCRIPT="/app/process_upload_pdf.py"
+ENV PROCESS_PDF_SCRIPT="/app/src/scripts/process_upload_pdf.py"
+ENV PROCESS_EXCEL_SCRIPT="/app/src/scripts/process_upload_excel.py"
 ENV VEHICLES_CSV_PATH="/app/processed_data/vehiculos.csv"
 ENV MATERIALS_CSV_PATH="/app/processed_data/materiales.csv"
 ENV TMP_DIR="/app/tmp"
