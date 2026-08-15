@@ -228,7 +228,7 @@ export default function App() {
   // Filtros de UI
   const [filtroVehiculo, setFiltroVehiculo] = useState('Todos');
   const [groupMode, setGroupMode] = useState('Diario');
-  const [selectedPeriod, setSelectedPeriod] = useState('2026-06');
+  const [selectedPeriod, setSelectedPeriod] = useState('2026-08');
   const [vehicleList, setVehicleList] = useState([]);
   const [showNotification, setShowNotification] = useState(false);
   const [unreadNotifications, setUnreadNotifications] = useState(0);
@@ -1075,12 +1075,13 @@ export default function App() {
                     <div className="flex items-center gap-2">
                       <Calendar className="w-4 h-4 text-emerald-400 shrink-0" />
                       <span>
-                        {selectedPeriod === '2026-07' ? 'Julio 2026 (Actual)' :
-                          selectedPeriod === '2026-06' ? 'Junio 2026' :
-                            selectedPeriod === '2026-05' ? 'Mayo 2026' :
-                              selectedPeriod === '2026-04' ? 'Abril 2026' :
-                                selectedPeriod === '2026-03' ? 'Marzo 2026' :
-                                  selectedPeriod === '2026-02' ? 'Febrero 2026' : 'Enero 2026'}
+                        {selectedPeriod === '2026-08' ? 'Agosto 2026 (Actual)' :
+                          selectedPeriod === '2026-07' ? 'Julio 2026' :
+                            selectedPeriod === '2026-06' ? 'Junio 2026' :
+                              selectedPeriod === '2026-05' ? 'Mayo 2026' :
+                                selectedPeriod === '2026-04' ? 'Abril 2026' :
+                                  selectedPeriod === '2026-03' ? 'Marzo 2026' :
+                                    selectedPeriod === '2026-02' ? 'Febrero 2026' : 'Enero 2026'}
                       </span>
                     </div>
                     <span className="text-slate-500 text-[8px]">▼</span>
@@ -1089,7 +1090,8 @@ export default function App() {
                   {isOpenPeriod && (
                     <div className="absolute left-0 mt-1 w-full sm:w-56 glass-panel py-1.5 rounded-xl border border-slate-800/80 shadow-2xl z-50 max-h-60 overflow-y-auto animate-in fade-in slide-in-from-top-1 duration-150">
                       {[
-                        { val: '2026-07', label: 'Julio 2026 (Actual)' },
+                        { val: '2026-08', label: 'Agosto 2026 (Actual)' },
+                        { val: '2026-07', label: 'Julio 2026' },
                         { val: '2026-06', label: 'Junio 2026' },
                         { val: '2026-05', label: 'Mayo 2026' },
                         { val: '2026-04', label: 'Abril 2026' },
@@ -3320,10 +3322,11 @@ function FuelAlertsView({ API_BASE, darkMode }) {
   const [platesList, setPlatesList] = useState([]);
 
   const MONTHS = [
-    { value: 'Todos', label: 'Todos (Mayo - Julio)' },
+    { value: 'Todos', label: 'Todos (Mayo - Agosto)' },
     { value: '2026-05', label: 'Mayo 2026' },
     { value: '2026-06', label: 'Junio 2026' },
-    { value: '2026-07', label: 'Julio 2026' }
+    { value: '2026-07', label: 'Julio 2026' },
+    { value: '2026-08', label: 'Agosto 2026' }
   ];
 
   const fetchPlates = async () => {
@@ -5206,6 +5209,7 @@ function ViajesView({ API_BASE, darkMode }) {
                 <th className="py-3 px-4">Origen (Cantera)</th>
                 <th className="py-3 px-4">Destino (Planta)</th>
                 <th className="py-3 px-4">Material</th>
+                <th className="py-3 px-4 text-center">Planif.</th>
                 <th className="py-3 px-4 text-right">Toneladas</th>
                 <th className="py-3 px-4 text-right">Gastos</th>
               </tr>
@@ -5213,19 +5217,19 @@ function ViajesView({ API_BASE, darkMode }) {
             <tbody className="divide-y divide-slate-850">
               {!hasFilter ? (
                 <tr>
-                  <td colSpan="8" className="py-12 text-center text-slate-500 dark:text-slate-400 font-semibold text-sm">
+                  <td colSpan="9" className="py-12 text-center text-slate-500 dark:text-slate-400 font-semibold text-sm">
                     🔍 Por favor, seleccione un día o ingrese una placa para buscar en el historial de viajes.
                   </td>
                 </tr>
               ) : loadingHistory ? (
                 <tr>
-                  <td colSpan="8" className="py-12 text-center text-slate-400 font-medium italic">
+                  <td colSpan="9" className="py-12 text-center text-slate-400 font-medium italic">
                     Cargando historial de viajes...
                   </td>
                 </tr>
               ) : completedTrips.length === 0 ? (
                 <tr>
-                  <td colSpan="8" className="py-12 text-center text-slate-500 font-medium italic">
+                  <td colSpan="9" className="py-12 text-center text-slate-500 font-medium italic">
                     No se encontraron viajes completados con los filtros seleccionados.
                   </td>
                 </tr>
@@ -5234,10 +5238,19 @@ function ViajesView({ API_BASE, darkMode }) {
                   <tr key={t.id || idx} className="hover:bg-slate-900/10 transition-colors">
                     <td className="py-3 px-4 text-slate-450 dark:text-slate-400 font-medium">{formatDateOnly(t.fecha)}</td>
                     <td className="py-3 px-4 text-center text-slate-200 font-extrabold">{t.placa || t.vehiculo_id}</td>
-                    <td className="py-3 px-4 text-slate-350">{t.conductor || '-'}</td>
+                    <td className="py-3 px-4 text-slate-355">{t.conductor || '-'}</td>
                     <td className="py-3 px-4 font-semibold text-slate-300">{t.origen || '-'}</td>
                     <td className="py-3 px-4 text-slate-355">{t.destino || '-'}</td>
                     <td className="py-3 px-4 text-slate-355">{t.material || '-'}</td>
+                    <td className="py-3 px-4 text-center">
+                      <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                        (t.planificado || '').toLowerCase() === 'no'
+                          ? 'bg-blue-500/10 text-blue-400 border border-blue-500/20'
+                          : 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
+                      }`}>
+                        {(t.planificado || '').toLowerCase() === 'no' ? 'NO' : 'SÍ'}
+                      </span>
+                    </td>
                     <td className="py-3 px-4 text-right text-slate-300 font-bold">{(t.toneladas || 0.0).toFixed(1)}</td>
                     <td className="py-3 px-4 text-right text-red-400 font-bold">S/ {(t.gasto || 0.0).toLocaleString()}</td>
                   </tr>

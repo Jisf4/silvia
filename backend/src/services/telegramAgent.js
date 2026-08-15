@@ -147,7 +147,10 @@ export async function processTelegramMessage(chatId, messageText) {
 // Helper para enviar mensaje directo al chatId emisor
 async function sendTelegramMessageDirect(chatId, text) {
   const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
-  if (!BOT_TOKEN) return;
+  if (!BOT_TOKEN) {
+    console.warn('[Telegram Agent] No se puede enviar la respuesta: TELEGRAM_BOT_TOKEN no está definido en las variables de entorno de la nube.');
+    return;
+  }
   const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
   
   let retries = 3;

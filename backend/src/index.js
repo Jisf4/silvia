@@ -145,8 +145,8 @@ function setupAutomaticCloseDay(serverPort) {
     try {
       const { hour, minute } = getLimaHourAndMinute();
       
-      // Ejecutar exactamente a las 8:00 PM (20:00)
-      if (hour === 20 && minute === 0) {
+      // Ejecutar si son las 8:00 PM (20:00) o más tarde y el día de hoy no se ha cerrado aún
+      if (hour >= 20) {
         const limaDate = getLimaDateString();
         if (lastClosedDate !== limaDate) {
           console.log(`[Auto Close Day] Iniciando cierre automático para la fecha: ${limaDate}`);

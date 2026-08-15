@@ -166,17 +166,17 @@ router.get('/vehicles', async (req, res) => {
 
 // 2. ENDPOINT: Métricas Consolidadas (Tarjetas superiores)
 router.get('/metrics', async (req, res) => {
-  const currPeriod = req.query.periodo || '2026-06';
+  const currPeriod = req.query.periodo || '2026-08';
   const vehiculoId = req.query.vehiculo_id || 'Todos';
   const prevPeriod = getPreviousPeriod(currPeriod);
 
-  // 1. Si es el mes en curso (2026-07), verificar vigencia de caché de 24h
-  if (currPeriod === '2026-07') {
+  // 1. Si es un mes en curso o reciente (Julio/Agosto 2026), verificar vigencia de caché de 24h
+  if (currPeriod === '2026-07' || currPeriod === '2026-08') {
     try {
       const checkSql = `
         SELECT MAX(last_updated) AS max_last_updated 
         FROM \`silvia_dataset.kpi_metrics_monthly\` 
-        WHERE periodo = '2026-07';
+        WHERE periodo = '${currPeriod}';
       `;
       const checkResult = await runQuery(checkSql);
       const lastUpdated = checkResult && checkResult[0] && checkResult[0].max_last_updated
@@ -185,11 +185,11 @@ router.get('/metrics', async (req, res) => {
 
       const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
       if (!lastUpdated || lastUpdated < oneDayAgo) {
-        console.log(`[API Metrics] Caché de mes actual '2026-07' obsoleta o inexistente. Recalculando desde tablas crudas...`);
+        console.log(`[API Metrics] Caché de periodo '${currPeriod}' obsoleta o inexistente. Recalculando desde tablas crudas...`);
 
-        // Recalcular mes actual en BigQuery
+        // Recalcular periodo en BigQuery
         const recalculateSql = `
-          DELETE FROM \`silvia_dataset.kpi_metrics_monthly\` WHERE periodo = '2026-07';
+          DELETE FROM \`silvia_dataset.kpi_metrics_monthly\` WHERE periodo = '${currPeriod}';
           
           INSERT INTO \`silvia_dataset.kpi_metrics_monthly\` (
             periodo,
@@ -208,15 +208,12 @@ router.get('/metrics', async (req, res) => {
             viajes_realizados,
             peso_seco,
             viajes_sin_guia,
-            last_updated
-          )
-          WITH base_metrics AS (
-            -- 1. Viajes
+             -- 1. Viajes
             SELECT 
-              '2026-07' AS periodo,
-              vehiculo_id,
-              SUM(monto_total) AS facturacion,
-              SUM(gastos) AS gastos,
+              '${currPeriod}' AS periodo,
+              t.vehiculo_id,
+              SUM(t.monto_total) AS facturacion,
+              SUM(t.gastos) AS gastos,
               0.0 AS combustible_monto,
               0.0 AS combustible_galones,
               0.0 AS gnv_monto,
@@ -227,22 +224,23 @@ router.get('/metrics', async (req, res) => {
               0.0 AS distancia_km,
               0.0 AS ingresos_proyectados,
               COUNT(*) AS viajes_realizados,
-              SUM(peso_seco) AS peso_seco,
-              COUNTIF(nro_guia IS NULL OR TRIM(nro_guia) = '' OR nro_guia = 'None') AS viajes_sin_guia
-            FROM \`silvia_dataset.viajes\`
-            WHERE FORMAT_TIMESTAMP('%Y-%m', fecha) = '2026-07' AND vehiculo_id IS NOT NULL
+              SUM(t.peso_seco) AS peso_seco,
+              COUNTIF(t.nro_guia IS NULL OR TRIM(t.nro_guia) = '' OR t.nro_guia = 'None') AS viajes_sin_guia
+            FROM \`silvia_dataset.viajes\` t
+            JOIN \`silvia_dataset.vehiculos\` v ON t.vehiculo_id = v.id
+            WHERE FORMAT_TIMESTAMP('%Y-%m', t.fecha) = '${currPeriod}'
             GROUP BY 1, 2
 
             UNION ALL
 
             -- 2. Combustible (Diesel)
             SELECT 
-              '2026-07' AS periodo,
-              vehiculo_id,
+              '${currPeriod}' AS periodo,
+              t.vehiculo_id,
               0.0 AS facturacion,
               0.0 AS gastos,
-              SUM(monto_despachado) AS combustible_monto,
-              SUM(galones_despachados) AS combustible_galones,
+              SUM(t.monto_despachado) AS combustible_monto,
+              SUM(t.galones_despachados) AS combustible_galones,
               0.0 AS gnv_monto,
               0.0 AS gnv_m3,
               0.0 AS peajes_monto,
@@ -253,15 +251,16 @@ router.get('/metrics', async (req, res) => {
               0 AS viajes_realizados,
               0.0 AS peso_seco,
               0 AS viajes_sin_guia
-            FROM \`silvia_dataset.combustible\`
-            WHERE FORMAT_TIMESTAMP('%Y-%m', fecha) = '2026-07' AND vehiculo_id IS NOT NULL
+            FROM \`silvia_dataset.combustible\` t
+            JOIN \`silvia_dataset.vehiculos\` v ON t.vehiculo_id = v.id
+            WHERE FORMAT_TIMESTAMP('%Y-%m', t.fecha) = '${currPeriod}'
             GROUP BY 1, 2
 
             UNION ALL
 
             -- 3. GNV (joined with vehiculos on plate)
             SELECT 
-              '2026-07' AS periodo,
+              '${currPeriod}' AS periodo,
               v.id AS vehiculo_id,
               0.0 AS facturacion,
               0.0 AS gastos,
@@ -279,22 +278,22 @@ router.get('/metrics', async (req, res) => {
               0 AS viajes_sin_guia
             FROM \`silvia_dataset.gnv\` g
             JOIN \`silvia_dataset.vehiculos\` v ON TRIM(g.placa) = TRIM(v.placa)
-            WHERE FORMAT_DATE('%Y-%m', g.fecha) = '2026-07'
+            WHERE FORMAT_DATE('%Y-%m', g.fecha) = '${currPeriod}'
             GROUP BY 1, 2
 
             UNION ALL
 
             -- 4. Peajes (placa contains vehiculo_id)
             SELECT 
-              '2026-07' AS periodo,
-              placa AS vehiculo_id,
+              '${currPeriod}' AS periodo,
+              v.id AS vehiculo_id,
               0.0 AS facturacion,
               0.0 AS gastos,
               0.0 AS combustible_monto,
               0.0 AS combustible_galones,
               0.0 AS gnv_monto,
               0.0 AS gnv_m3,
-              SUM(CASE WHEN tipo_servicio = 'Consumo' THEN -total_servicio ELSE 0.0 END) AS peajes_monto,
+              SUM(CASE WHEN t.tipo_servicio = 'Consumo' THEN -t.total_servicio ELSE 0.0 END) AS peajes_monto,
               0.0 AS combustible_esperado_monto,
               0.0 AS gnv_esperado_monto,
               0.0 AS distancia_km,
@@ -302,16 +301,17 @@ router.get('/metrics', async (req, res) => {
               0 AS viajes_realizados,
               0.0 AS peso_seco,
               0 AS viajes_sin_guia
-            FROM \`silvia_dataset.peajes\`
-            WHERE FORMAT_DATE('%Y-%m', fecha_transito) = '2026-07' AND placa IS NOT NULL
+            FROM \`silvia_dataset.peajes\` t
+            JOIN \`silvia_dataset.vehiculos\` v ON t.placa = v.id
+            WHERE FORMAT_DATE('%Y-%m', t.fecha_transito) = '${currPeriod}'
             GROUP BY 1, 2
 
             UNION ALL
 
             -- 5. Anomaly expected fuel amounts & distance for DIESEL
             SELECT 
-              '2026-07' AS periodo,
-              vehiculo_id,
+              '${currPeriod}' AS periodo,
+              t.vehiculo_id,
               0.0 AS facturacion,
               0.0 AS gastos,
               0.0 AS combustible_monto,
@@ -319,22 +319,23 @@ router.get('/metrics', async (req, res) => {
               0.0 AS gnv_monto,
               0.0 AS gnv_m3,
               0.0 AS peajes_monto,
-              SUM(IF(tipo_combustible = 'DIESEL', consumo_esperado * precio_unitario, 0.0)) AS combustible_esperado_monto,
-              SUM(IF(tipo_combustible = 'GNV', consumo_esperado * precio_unitario, 0.0)) AS gnv_esperado_monto,
-              SUM(distancia_km) AS distancia_km,
+              SUM(IF(t.tipo_combustible = 'DIESEL', t.consumo_esperado * t.precio_unitario, 0.0)) AS combustible_esperado_monto,
+              SUM(IF(t.tipo_combustible = 'GNV', t.consumo_esperado * t.precio_unitario, 0.0)) AS gnv_esperado_monto,
+              SUM(t.distancia_km) AS distancia_km,
               0.0 AS ingresos_proyectados,
               0 AS viajes_realizados,
               0.0 AS peso_seco,
               0 AS viajes_sin_guia
-            FROM \`silvia_dataset.fuel_anomalies\`
-            WHERE FORMAT_TIMESTAMP('%Y-%m', fecha_fin) = '2026-07' AND vehiculo_id IS NOT NULL
+            FROM \`silvia_dataset.fuel_anomalies\` t
+            JOIN \`silvia_dataset.vehiculos\` v ON t.vehiculo_id = v.id
+            WHERE FORMAT_TIMESTAMP('%Y-%m', t.fecha_fin) = '${currPeriod}'
             GROUP BY 1, 2
 
             UNION ALL
 
             -- 6. Ingresos Proyectados (Option A: from planificacion_asignaciones)
             SELECT 
-              '2026-07' AS periodo,
+              '${currPeriod}' AS periodo,
               p.vehiculo_id,
               0.0 AS facturacion,
               0.0 AS gastos,
@@ -366,7 +367,7 @@ router.get('/metrics', async (req, res) => {
               FROM \`silvia_dataset.viajes\`
               GROUP BY 1
             ) v_global ON p.vehiculo_id = v_global.vehiculo_id
-            WHERE FORMAT_DATE('%Y-%m', p.fecha_operacion) = '2026-07'
+            WHERE FORMAT_DATE('%Y-%m', p.fecha_operacion) = '${currPeriod}'
             GROUP BY 1, 2
           )
           SELECT 
@@ -485,34 +486,20 @@ router.get('/metrics', async (req, res) => {
     const utilidadNet = facturacion - (currRow.gastos || 0) - combustibleMonto - peajesMonto;
 
     // Ingresos Proyectados:
-    // - Para meses anteriores a junio (cerrados): no estimamos pendientes (ingresos_proyectados = facturacion)
-    // - Para junio (mes recién cerrado con guías pendientes): extrapolamos con descuento del 35%
-    // - Para julio en adelante (meses con planificación): usamos planificación con descuento del 35%
-    let ingresosProyectados = 0;
-    if (currPeriod < '2026-06') {
-      ingresosProyectados = facturacion;
-    } else if (currRow.ingresos_proyectados && currRow.ingresos_proyectados > 0) {
-      ingresosProyectados = currRow.ingresos_proyectados * 0.65; // Margen pesimista del 35%
-    } else {
-      const viajesRealizados = currRow.viajes_realizados || 0;
-      const viajesSinGuia = currRow.viajes_sin_guia || 0;
-      const viajesFacturados = viajesRealizados - viajesSinGuia;
-      if (viajesRealizados > 0 && viajesFacturados > 0) {
-        // Mantenemos la facturación real ya ingresada al 100% y aplicamos un factor pesimista de 65% a la estimación del saldo pendiente
-        const ingresosFacturados = facturacion;
-        const ingresosEstimadosPendientes = (facturacion / viajesFacturados) * viajesSinGuia * 0.65;
-        ingresosProyectados = ingresosFacturados + ingresosEstimadosPendientes;
-      } else {
-        ingresosProyectados = facturacion;
-      }
+    // Estimamos los ingresos de los viajes pendientes de guías/liquidaciones (viajesSinGuia)
+    // a partir del flete promedio de los viajes ya facturados del mismo mes (o 365.00 como fallback general).
+    const viajesRealizados = currRow.viajes_realizados || 0;
+    const viajesSinGuia = currRow.viajes_sin_guia || 0;
+    const viajesFacturados = viajesRealizados - viajesSinGuia;
+
+    let ingresosProyectados = facturacion;
+    if (viajesSinGuia > 0) {
+      const fletePromedio = (viajesFacturados > 0) ? (facturacion / viajesFacturados) : 365.00;
+      ingresosProyectados = facturacion + (viajesSinGuia * fletePromedio);
     }
 
-    // Combustible esperado unificado (Diesel + GNV)
-    const combustibleEsperadoMonto = (currRow.combustible_esperado_monto || 0) + (currRow.gnv_esperado_monto || 0);
-    const combustibleEsperadoFinal = combustibleEsperadoMonto > 0 ? combustibleEsperadoMonto : combustibleMonto;
-
-    // Utilidad Neta Estimada: ingresos proyectados menos gastos de viajes, combustible esperado y peajes
-    const utilidadNetEstimada = ingresosProyectados - (currRow.gastos || 0) - combustibleEsperadoFinal - peajesMonto;
+    // Utilidad Neta Estimada: ingresos proyectados menos todos los gastos reales del periodo
+    const utilidadNetEstimada = ingresosProyectados - (currRow.gastos || 0) - combustibleMonto - peajesMonto;
 
     const viajes = currRow.viajes_realizados || 0;
     const toneladasSecas = currRow.peso_seco || 0;
@@ -523,7 +510,7 @@ router.get('/metrics', async (req, res) => {
 
     // Eficiencia: km/gal. Calculado como: kilómetros recorridos / volumen total
     const consumoEspecif = combustibleVolumen > 0 ? (distancia / combustibleVolumen) : 0;
-    const viajesSinGuia = currRow.viajes_sin_guia || 0;
+    // viajesSinGuia is already declared above
 
     const gastoGnv = Math.abs(currRow.gnv_monto || 0);
     const prevGastoGnv = Math.abs(prevRow.gnv_monto || 0);
@@ -537,33 +524,24 @@ router.get('/metrics', async (req, res) => {
     const prevPeajesMonto = prevRow.peajes_monto || 0;
     const prevUtilidadNet = prevFacturacion - (prevRow.gastos || 0) - prevCombustibleMonto - prevPeajesMonto;
 
-    // Ingresos Proyectados previos
-    let prevIngresosProyectados = 0;
-    if (prevPeriod < '2026-06') {
-      prevIngresosProyectados = prevFacturacion;
-    } else if (prevRow.ingresos_proyectados && prevRow.ingresos_proyectados > 0) {
-      prevIngresosProyectados = prevRow.ingresos_proyectados * 0.65; // Margen pesimista del 35%
-    } else {
-      const prevViajesRealizados = prevRow.viajes_realizados || 0;
-      const prevViajesSinGuia = prevRow.viajes_sin_guia || 0;
-      const prevViajesFacturados = prevViajesRealizados - prevViajesSinGuia;
-      if (prevViajesRealizados > 0 && prevViajesFacturados > 0) {
-        const prevIngresosFacturados = prevFacturacion;
-        const prevIngresosEstimadosPendientes = (prevFacturacion / prevViajesFacturados) * prevViajesSinGuia * 0.65;
-        prevIngresosProyectados = prevIngresosFacturados + prevIngresosEstimadosPendientes;
-      } else {
-        prevIngresosProyectados = prevFacturacion;
-      }
+    // Ingresos Proyectados previos:
+    const prevViajesRealizados = prevRow.viajes_realizados || 0;
+    const prevViajesSinGuia = prevRow.viajes_sin_guia || 0;
+    const prevViajesFacturados = prevViajesRealizados - prevViajesSinGuia;
+
+    let prevIngresosProyectados = prevFacturacion;
+    if (prevViajesSinGuia > 0) {
+      const prevFletePromedio = (prevViajesFacturados > 0) ? (prevFacturacion / prevViajesFacturados) : 365.00;
+      prevIngresosProyectados = prevFacturacion + (prevViajesSinGuia * prevFletePromedio);
     }
 
-    const prevCombustibleEsperadoMonto = (prevRow.combustible_esperado_monto || 0) + (prevRow.gnv_esperado_monto || 0);
-    const prevCombustibleEsperadoFinal = prevCombustibleEsperadoMonto > 0 ? prevCombustibleEsperadoMonto : prevCombustibleMonto;
-    const prevUtilidadNetEstimada = prevIngresosProyectados - (prevRow.gastos || 0) - prevCombustibleEsperadoFinal - prevPeajesMonto;
+    // Utilidad Neta Estimada previa
+    const prevUtilidadNetEstimada = prevIngresosProyectados - (prevRow.gastos || 0) - prevCombustibleMonto - prevPeajesMonto;
 
     const prevCombustibleVolumen = (prevRow.combustible_galones || 0) + (prevRow.gnv_m3 || 0);
     const prevDistancia = prevRow.distancia_km || 0;
     const prevConsumoEspecif = prevCombustibleVolumen > 0 ? (prevDistancia / prevCombustibleVolumen) : 0;
-    const prevViajesSinGuia = prevRow.viajes_sin_guia || 0;
+    // prevViajesSinGuia is already declared above
     const prevViajes = prevRow.viajes_realizados || 0;
     const prevToneladasSecas = prevRow.peso_seco || 0;
 
@@ -788,7 +766,7 @@ router.get('/metrics', async (req, res) => {
 
     // Fallback: Datos mock dinámicos basados en mes seleccionado
     const isJune = currPeriod === '2026-06';
-    const baseMult = isJune ? 1.0 : (currPeriod === '2026-07' ? 1.05 : 0.95);
+    const baseMult = isJune ? 1.0 : ((currPeriod === '2026-07' || currPeriod === '2026-08') ? 1.05 : 0.95);
 
     res.json({
       success: true,
@@ -1059,7 +1037,7 @@ router.get('/vehicles/efficiency', async (req, res) => {
       });
     } else {
       const isJune = targetPeriod === '2026-06';
-      const baseMult = isJune ? 1.0 : (targetPeriod === '2026-07' ? 1.05 : 0.95);
+      const baseMult = isJune ? 1.0 : ((targetPeriod === '2026-07' || targetPeriod === '2026-08') ? 1.05 : 0.95);
       res.json({
         success: true,
         source: 'Mock (Fallback)',
@@ -1322,9 +1300,12 @@ router.get('/planning/load', async (req, res) => {
         if (lastVisitedQuarry) {
           startZone = lastVisitedQuarry;
         } else {
-          const resolvedCan = getCanteraForPlant(startZone, dbOrders);
-          if (resolvedCan) {
-            startZone = resolvedCan.toUpperCase().trim();
+          const validQuarries = ['YERBABUENA', 'SAN LORENZO', 'JICAMARCA', 'FLOR DE NIEVE'];
+          if (!validQuarries.includes(startZone)) {
+            const resolvedCan = getCanteraForPlant(startZone, dbOrders);
+            if (resolvedCan) {
+              startZone = resolvedCan.toUpperCase().trim();
+            }
           }
         }
       }
@@ -1532,9 +1513,12 @@ router.post('/planning/calculate', async (req, res) => {
       if (lastVisitedQuarry) {
         startZone = lastVisitedQuarry;
       } else {
-        const resolvedCan = getCanteraForPlant(startZone, orders);
-        if (resolvedCan) {
-          startZone = resolvedCan.toUpperCase().trim();
+        const validQuarries = ['YERBABUENA', 'SAN LORENZO', 'JICAMARCA', 'FLOR DE NIEVE'];
+        if (!validQuarries.includes(startZone)) {
+          const resolvedCan = getCanteraForPlant(startZone, orders);
+          if (resolvedCan) {
+            startZone = resolvedCan.toUpperCase().trim();
+          }
         }
       }
 
@@ -2135,45 +2119,58 @@ router.post('/planning/close-day', async (req, res) => {
     };
 
     // Obtener Max ID de viajes para autoincrementar
-    const maxTripRows = await runQuery(`SELECT MAX(id) as max_id FROM \`${datasetId}.VIAJES\``) || [{ max_id: 1000 }];
+    const maxTripRows = await runQuery(`SELECT MAX(id) as max_id FROM \`${datasetId}.viajes\``) || [{ max_id: 1000 }];
     let nextTripId = (maxTripRows[0] && maxTripRows[0].max_id ? parseInt(maxTripRows[0].max_id) : 1000) + 1;
 
-    // 2. Leer registros de planificacion_diaria para la fecha dada
+    // 2. Leer registros de planificacion_diaria y viajes_detectados para la fecha dada
     const dailyRows = await runQuery(`
       SELECT placa, zona_inicio, destino_asignado, material, viajes_programados, conductor, estado
       FROM \`${datasetId}.planificacion_diaria\`
       WHERE fecha_operacion = DATE('${date}')
     `) || [];
 
-    if (dailyRows.length === 0) {
-      return res.json({ success: true, message: 'No hay planificaciones diarias registradas para cerrar en esta fecha.' });
+    const detectedRows = await runQuery(`
+      SELECT placa, zona_inicio, destino_asignado, material, conductor
+      FROM \`${datasetId}.viajes_detectados\`
+      WHERE fecha_operacion = DATE('${date}')
+    `) || [];
+
+    if (dailyRows.length === 0 && detectedRows.length === 0) {
+      return res.json({ success: true, message: 'No hay planificaciones ni viajes detectados para cerrar en esta fecha.' });
     }
 
     const tripsToInsert = [];
+    const processedPlates = new Set();
 
+    // Agrupar detecciones reales por placa
+    const detectedByPlaca = {};
+    for (const det of detectedRows) {
+      const pl = (det.placa || '').toUpperCase().trim();
+      if (!detectedByPlaca[pl]) detectedByPlaca[pl] = [];
+      detectedByPlaca[pl].push(det);
+    }
+
+    // A. Procesar vehículos planificados
     for (const row of dailyRows) {
+      const pl = (row.placa || '').toUpperCase().trim();
+      processedPlates.add(pl);
+
       const startZone = (row.zona_inicio || '').toUpperCase().trim();
       const isJicaOrFlor = (startZone === 'JICAMARCA' || startZone === 'FLOR DE NIEVE');
       const vehId = getVehId(row.placa);
 
-      let count = 0;
-      if (isJicaOrFlor) {
-        // Para Jicamarca y Flor de Nieve, cada fila es un viaje ya registrado por GPS
-        count = 1;
-      } else {
-        // Para Yerbabuena y San Lorenzo, contamos los viajes reales completados desde la tabla viajes_detectados en BigQuery
-        const detectedRows = await runQuery(`
-          SELECT COUNT(*) as cnt 
-          FROM \`${datasetId}.viajes_detectados\` 
-          WHERE placa = '${row.placa}' AND fecha_operacion = DATE('${date}')
-        `) || [{ cnt: 0 }];
-        count = detectedRows[0] && detectedRows[0].cnt ? parseInt(detectedRows[0].cnt) : 0;
+      let totalDetections = 0;
+      let detections = [];
+      if (detectedByPlaca[pl]) {
+        detections = detectedByPlaca[pl];
+        totalDetections = detections.length;
       }
 
-      for (let i = 0; i < count; i++) {
+      if (isJicaOrFlor) {
+        // Jicamarca y Flor de Nieve: siempre se registra al menos 1 viaje planificado
         const destPlant = (row.destino_asignado || 'MEIGGS').toUpperCase().trim();
         const mat = (row.material || 'ARENA').toUpperCase().trim();
-
+        
         tripsToInsert.push({
           id: nextTripId++,
           vehiculo_id: vehId || 'VE-01',
@@ -2194,20 +2191,133 @@ router.post('/planning/close-day', async (req, res) => {
           distancia_km: 45.0,
           toneladas: 48.0,
           flete: 500.0,
-          monto_sin_igv: 500.0,
-          gasto: 150.0
+          gasto: 150.0,
+          planificado: 'si'
+        });
+
+        // Si hay más detecciones GPS, el excedente se marca como no planificado
+        if (totalDetections > 1) {
+          for (let i = 1; i < totalDetections; i++) {
+            const det = detections[i];
+            const detOrigin = (det.zona_inicio || startZone).toUpperCase().trim();
+            const detDest = (det.destino_asignado || destPlant).toUpperCase().trim();
+            const detMat = (det.material || mat).toUpperCase().trim();
+            const detDriver = det.conductor || row.conductor;
+
+            tripsToInsert.push({
+              id: nextTripId++,
+              vehiculo_id: vehId || 'VE-01',
+              vehiculo_des: row.placa,
+              cliente_id: 'C-01',
+              cliente_des: 'VIRGEN DE LA ESTRELLA SAC',
+              material_id: getMatId(detMat) || 'M-01',
+              material_des: detMat,
+              conductor_id: getConductorId(detDriver) || 'CO-01',
+              conductor_des: detDriver || 'Juan Pérez',
+              fecha: `${date} 18:00:00`,
+              origen: getLocId(detOrigin) || 'U-01',
+              origen_des: detOrigin,
+              destino: getLocId(detDest) || 'U-12',
+              destino_des: detDest,
+              guia_cliente: `GC-${nextTripId}`,
+              guia_transportista: `GT-${nextTripId}`,
+              distancia_km: 45.0,
+              toneladas: 48.0,
+              flete: 500.0,
+              gasto: 150.0,
+              planificado: 'no'
+            });
+          }
+        }
+      } else {
+        // Yerbabuena y San Lorenzo
+        const plannedCount = row.viajes_programados || 1;
+        const destPlant = (row.destino_asignado || 'MEIGGS').toUpperCase().trim();
+        const mat = (row.material || 'ARENA').toUpperCase().trim();
+
+        if (totalDetections > 0) {
+          for (let i = 0; i < totalDetections; i++) {
+            const det = detections[i];
+            const detOrigin = (det.zona_inicio || startZone).toUpperCase().trim();
+            const detDest = (det.destino_asignado || destPlant).toUpperCase().trim();
+            const detMat = (det.material || mat).toUpperCase().trim();
+            const detDriver = det.conductor || row.conductor;
+
+            tripsToInsert.push({
+              id: nextTripId++,
+              vehiculo_id: vehId || 'VE-01',
+              vehiculo_des: row.placa,
+              cliente_id: 'C-01',
+              cliente_des: 'VIRGEN DE LA ESTRELLA SAC',
+              material_id: getMatId(detMat) || 'M-01',
+              material_des: detMat,
+              conductor_id: getConductorId(detDriver) || 'CO-01',
+              conductor_des: detDriver || 'Juan Pérez',
+              fecha: `${date} 18:00:00`,
+              origen: getLocId(detOrigin) || 'U-01',
+              origen_des: detOrigin,
+              destino: getLocId(detDest) || 'U-12',
+              destino_des: detDest,
+              guia_cliente: `GC-${nextTripId}`,
+              guia_transportista: `GT-${nextTripId}`,
+              distancia_km: 45.0,
+              toneladas: 48.0,
+              flete: 500.0,
+              gasto: 150.0,
+              planificado: i < plannedCount ? 'si' : 'no'
+            });
+          }
+        }
+      }
+    }
+
+    // B. Procesar vehículos no planificados pero detectados automáticamente por el GPS
+    for (const pl of Object.keys(detectedByPlaca)) {
+      if (processedPlates.has(pl)) continue;
+
+      const detections = detectedByPlaca[pl];
+      const vehId = getVehId(pl);
+
+      for (const det of detections) {
+        const detOrigin = (det.zona_inicio || 'YERBABUENA').toUpperCase().trim();
+        const detDest = (det.destino_asignado || 'MEIGGS').toUpperCase().trim();
+        const detMat = (det.material || 'ARENA').toUpperCase().trim();
+        const detDriver = det.conductor || 'Juan Pérez';
+
+        tripsToInsert.push({
+          id: nextTripId++,
+          vehiculo_id: vehId || 'VE-01',
+          vehiculo_des: pl,
+          cliente_id: 'C-01',
+          cliente_des: 'VIRGEN DE LA ESTRELLA SAC',
+          material_id: getMatId(detMat) || 'M-01',
+          material_des: detMat,
+          conductor_id: getConductorId(detDriver) || 'CO-01',
+          conductor_des: detDriver,
+          fecha: `${date} 18:00:00`,
+          origen: getLocId(detOrigin) || 'U-01',
+          origen_des: detOrigin,
+          destino: getLocId(detDest) || 'U-12',
+          destino_des: detDest,
+          guia_cliente: `GC-${nextTripId}`,
+          guia_transportista: `GT-${nextTripId}`,
+          distancia_km: 45.0,
+          toneladas: 48.0,
+          flete: 500.0,
+          gasto: 150.0,
+          planificado: 'no'
         });
       }
     }
 
     if (tripsToInsert.length > 0) {
       const values = tripsToInsert.map(t => {
-        return `(${t.id}, '${t.vehiculo_id}', '${t.vehiculo_des}', '${t.cliente_id}', '${t.cliente_des}', '${t.material_id}', '${t.material_des}', '${t.conductor_id}', '${t.conductor_des}', TIMESTAMP('${t.fecha}'), '${t.origen}', '${t.origen_des}', '${t.destino}', '${t.destino_des}', NULL, '${t.guia_transportista}', ${t.toneladas}, ${t.toneladas}, ${t.flete}, ${t.gasto})`;
+        return `(${t.id}, '${t.vehiculo_id}', '${t.vehiculo_des}', '${t.cliente_id}', '${t.cliente_des}', '${t.material_id}', '${t.material_des}', '${t.conductor_id}', '${t.conductor_des}', TIMESTAMP('${t.fecha}'), '${t.origen}', '${t.origen_des}', '${t.destino}', '${t.destino_des}', NULL, '${t.guia_transportista}', ${t.toneladas}, ${t.toneladas}, ${t.flete}, ${t.gasto}, '${t.planificado}')`;
       }).join(', ');
 
       const insQuery = `
         INSERT INTO \`${datasetId}.viajes\` 
-          (id, vehiculo_id, vehiculo_des, cliente_id, cliente_des, material_id, material_des, conductor_id, conductor_des, fecha, origen, origen_des, destino, destino_des, nro_liquidacion, nro_guia, peso_seco, peso_humedo, monto_total, gastos)
+          (id, vehiculo_id, vehiculo_des, cliente_id, cliente_des, material_id, material_des, conductor_id, conductor_des, fecha, origen, origen_des, destino, destino_des, nro_liquidacion, nro_guia, peso_seco, peso_humedo, monto_total, gastos, planificado)
         VALUES ${values}
       `;
       await runQuery(insQuery);
@@ -2372,7 +2482,7 @@ router.get('/viajes', async (req, res) => {
   try {
     let whereConditions = [];
     if (date) {
-      whereConditions.push(`DATE(fecha, 'America/Lima') = DATE('${date}')`);
+      whereConditions.push(`fecha = DATE('${date}')`);
     }
     if (placa && placa.trim() !== '' && placa !== 'Todos') {
       whereConditions.push(`(UPPER(vehiculo_des) = '${placa.toUpperCase().trim()}' OR UPPER(vehiculo_id) = '${placa.toUpperCase().trim()}')`);
@@ -2398,7 +2508,8 @@ router.get('/viajes', async (req, res) => {
         nro_guia, 
         peso_seco AS toneladas, 
         monto_total AS flete, 
-        gastos AS gasto
+        gastos AS gasto,
+        planificado
       FROM \`${datasetId}.viajes\`
       ${whereClause}
       ORDER BY fecha DESC
@@ -3081,7 +3192,7 @@ router.post('/agent/webhook', async (req, res) => {
           COUNTIF(estado_alerta = 'Critico') as alertas_criticas,
           ROUND(SUM(CASE WHEN estado_alerta = 'Critico' THEN (consumo_real - consumo_esperado) ELSE 0.0 END), 2) as exceso_consumo
         FROM \`silvia_dataset.fuel_anomalies\`
-        WHERE FORMAT_TIMESTAMP('%Y-%m', fecha_fin) IN ('2026-02', '2026-06', '2026-07')
+        WHERE FORMAT_TIMESTAMP('%Y-%m', fecha_fin) IN ('2026-02', '2026-06', '2026-07', '2026-08')
         GROUP BY placa, periodo;
       `;
       const fuelAnomaliesHistory = await runQuery(fuelAnomaliesHistorySql);
@@ -3436,7 +3547,7 @@ router.post('/preliquidaciones/approve/:jobId', async (req, res) => {
             '${rec.id}',
             ${rec.liquidacion_nro ? `'${rec.liquidacion_nro}'` : 'NULL'},
             ${rec.transportista ? `'${rec.transportista}'` : 'NULL'},
-            ${rec.fecha ? `TIMESTAMP('${rec.fecha}')` : 'NULL'},
+            ${rec.fecha ? `DATE('${rec.fecha}')` : 'NULL'},
             ${rec.nro_guia ? `'${rec.nro_guia}'` : 'NULL'},
             ${rec.placa ? `'${rec.placa}'` : 'NULL'},
             ${rec.vehiculo_id ? `'${rec.vehiculo_id}'` : 'NULL'},
@@ -3612,12 +3723,9 @@ router.post('/telegram-webhook', async (req, res) => {
       const text = update.message.text;
       
       if (text) {
-        // Ejecución asíncrona para responder 200 OK inmediatamente
-        import('../services/telegramAgent.js').then(agent => {
-          agent.processTelegramMessage(chatId, text);
-        }).catch(err => {
-          console.error('[Telegram Webhook Error]:', err);
-        });
+        // Await the asynchronous agent execution so Cloud Run does not suspend the CPU before the message is sent
+        const agent = await import('../services/telegramAgent.js');
+        await agent.processTelegramMessage(chatId, text);
       }
     }
     res.sendStatus(200);
